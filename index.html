@@ -1,0 +1,651 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRAVELY | Food, Your Way</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #101110;
+    color: #fff;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 7%;
+    border-bottom: 1px solid #292b29;
+    position: sticky;
+    top: 0;
+    background: #101110;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: #ff7043;
+}
+
+nav {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+}
+
+nav a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+nav a:hover {
+    color: #ff7043;
+}
+
+.cart-button {
+    background: #ff7043;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 30px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.hero {
+    padding: 75px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    background: radial-gradient(circle at 80% 50%, #382017, #101110 55%);
+}
+
+.hero-content {
+    max-width: 550px;
+}
+
+.tag {
+    color: #ff8b64;
+    font-size: 13px;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(42px, 6vw, 75px);
+    line-height: 1.05;
+    margin-bottom: 22px;
+}
+
+.hero h1 span {
+    color: #ff7043;
+}
+
+.hero p {
+    color: #aaa;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.hero img {
+    width: 43%;
+    max-width: 480px;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: 8px solid #29201c;
+}
+
+.search {
+    display: flex;
+    gap: 10px;
+    max-width: 470px;
+}
+
+.search input {
+    flex: 1;
+    min-width: 0;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid #383838;
+    background: #202220;
+    color: white;
+    outline: none;
+}
+
+.search button {
+    background: #ff7043;
+    border: none;
+    padding: 0 22px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+section {
+    padding: 55px 7%;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.section-heading h2 {
+    font-size: 27px;
+}
+
+.section-heading p {
+    color: #999;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+.categories {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.category {
+    padding: 15px 24px;
+    border: 1px solid #343634;
+    border-radius: 30px;
+    color: #ddd;
+    cursor: pointer;
+    background: #1b1e1b;
+}
+
+.category.active,
+.category:hover {
+    background: #ff7043;
+    border-color: #ff7043;
+    color: white;
+}
+
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.food-card {
+    background: #1b1e1b;
+    border: 1px solid #2d302d;
+    border-radius: 17px;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.food-card:hover {
+    transform: translateY(-6px);
+    border-color: #ff7043;
+}
+
+.food-card img {
+    width: 100%;
+    height: 205px;
+    object-fit: cover;
+}
+
+.food-info {
+    padding: 20px;
+}
+
+.food-info h3 {
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+
+.food-info p {
+    color: #999;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.food-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.price {
+    color: #ff906b;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.add-btn {
+    background: #ff7043;
+    color: white;
+    border: none;
+    padding: 11px 17px;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background: #e85c32;
+}
+
+.cart-panel {
+    position: fixed;
+    top: 0;
+    right: -420px;
+    width: 390px;
+    max-width: 100%;
+    height: 100vh;
+    background: #1b1e1b;
+    z-index: 20;
+    padding: 25px;
+    transition: .3s;
+    overflow-y: auto;
+    border-left: 1px solid #383838;
+}
+
+.cart-panel.open {
+    right: 0;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.close-btn {
+    background: none;
+    color: white;
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.cart-item {
+    padding: 15px 0;
+    border-bottom: 1px solid #383838;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.quantity button {
+    padding: 4px 10px;
+    background: #ff7043;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    font-size: 21px;
+}
+
+.checkout {
+    width: 100%;
+    padding: 16px;
+    background: #ff7043;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    margin-top: 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.empty {
+    color: #999;
+    text-align: center;
+    padding: 40px 0;
+}
+
+footer {
+    text-align: center;
+    padding: 35px;
+    color: #888;
+    border-top: 1px solid #292b29;
+}
+
+@media(max-width: 850px) {
+    .food-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .hero img {
+        width: 40%;
+    }
+}
+
+@media(max-width: 600px) {
+    header {
+        padding: 18px 5%;
+    }
+    nav a {
+        display: none;
+    }
+    .hero {
+        padding: 50px 6%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .hero img {
+        width: 100%;
+        max-width: 350px;
+        align-self: center;
+    }
+    section {
+        padding: 40px 6%;
+    }
+    .food-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">CRAVELY.</div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#categories">Explore</a>
+        <a href="#menu">Menu</a>
+        <button class="cart-button" onclick="toggleCart()">
+            Cart (<span id="cart-count">0</span>)
+        </button>
+    </nav>
+</header>
+
+<main>
+<section class="hero" id="home">
+    <div class="hero-content">
+        <div class="tag">GOOD FOOD. GOOD MOOD.</div>
+
+        <h1>Discover your next <span>favourite</span> bite.</h1>
+
+        <p>
+            Explore amazing flavours, discover local restaurants
+            and get your favourite meals delivered to your doorstep.
+        </p>
+
+        <div class="search">
+            <input type="text" id="searchInput"
+            placeholder="Search food or restaurant...">
+            <button onclick="searchFood()">Search</button>
+        </div>
+    </div>
+
+    <img
+    src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800"
+    alt="Delicious pizza">
+</section>
+
+<section id="categories">
+    <div class="section-heading">
+        <div>
+            <h2>Explore Categories</h2>
+            <p>Find something delicious today.</p>
+        </div>
+    </div>
+
+    <div class="categories">
+        <button class="category active" onclick="filterFood('All',this)">All</button>
+        <button class="category" onclick="filterFood('Pizza',this)">🍕 Pizza</button>
+        <button class="category" onclick="filterFood('Burger',this)">🍔 Burger</button>
+        <button class="category" onclick="filterFood('Indian',this)">🍛 Indian</button>
+        <button class="category" onclick="filterFood('Dessert',this)">🍰 Dessert</button>
+        <button class="category" onclick="filterFood('Drinks',this)">🥤 Drinks</button>
+    </div>
+</section>
+
+<section id="menu">
+    <div class="section-heading">
+        <div>
+            <h2>Popular Right Now</h2>
+            <p>Handpicked dishes worth trying.</p>
+        </div>
+    </div>
+
+    <div class="food-grid" id="foodGrid"></div>
+</section>
+</main>
+
+<div class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+        <h2>Your Cart</h2>
+        <button class="close-btn" onclick="toggleCart()">×</button>
+    </div>
+
+    <div id="cartItems"></div>
+
+    <div class="total">
+        <span>Total</span>
+        <strong id="cartTotal">₹0</strong>
+    </div>
+
+    <button class="checkout" onclick="checkout()">
+        Proceed to Checkout
+    </button>
+</div>
+
+<footer>
+    <h3 class="logo">CRAVELY.</h3>
+    <p>Made for people who love great food.</p>
+    <p>© 2026 CRAVELY. All rights reserved.</p>
+</footer>
+
+<script>
+const foods = [
+    {
+        id: 1,
+        name: "Classic Cheese Pizza",
+        category: "Pizza",
+        restaurant: "Oven Stories",
+        price: 249,
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600"
+    },
+    {
+        id: 2,
+        name: "Smoky Chicken Burger",
+        category: "Burger",
+        restaurant: "Burger House",
+        price: 179,
+        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600"
+    },
+    {
+        id: 3,
+        name: "Chicken Biryani",
+        category: "Indian",
+        restaurant: "Spice Kitchen",
+        price: 220,
+        image: "https://images.unsplash.com/photo-1563379091339-03246963d96c?w=600"
+    },
+    {
+        id: 4,
+        name: "Chocolate Dessert",
+        category: "Dessert",
+        restaurant: "Sweet Corner",
+        price: 149,
+        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600"
+    },
+    {
+        id: 5,
+        name: "Fresh Orange Juice",
+        category: "Drinks",
+        restaurant: "Juice Point",
+        price: 89,
+        image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=600"
+    },
+    {
+        id: 6,
+        name: "Pepperoni Pizza",
+        category: "Pizza",
+        restaurant: "Pizza Studio",
+        price: 299,
+        image: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=600"
+    }
+];
+
+let cart = [];
+
+function displayFoods(list) {
+    const grid = document.getElementById("foodGrid");
+
+    if (!list.length) {
+        grid.innerHTML = "<p>No food items found.</p>";
+        return;
+    }
+
+    grid.innerHTML = list.map(food => `
+        <div class="food-card">
+            <img src="${food.image}" alt="${food.name}">
+            <div class="food-info">
+                <h3>${food.name}</h3>
+                <p>${food.restaurant} · ${food.category}</p>
+                <div class="food-bottom">
+                    <span class="price">₹${food.price}</span>
+                    <button class="add-btn"
+                    onclick="addToCart(${food.id})">
+                        Add +
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join("");
+}
+
+function filterFood(category, button) {
+    document.querySelectorAll(".category")
+    .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+    const result = category === "All"
+        ? foods
+        : foods.filter(food => food.category === category);
+
+    displayFoods(result);
+}
+
+function searchFood() {
+    const keyword = document.getElementById("searchInput")
+        .value.toLowerCase().trim();
+
+    const result = foods.filter(food =>
+        food.name.toLowerCase().includes(keyword) ||
+        food.restaurant.toLowerCase().includes(keyword) ||
+        food.category.toLowerCase().includes(keyword)
+    );
+
+    displayFoods(result);
+}
+
+function addToCart(id) {
+    const food = foods.find(item => item.id === id);
+    const existing = cart.find(item => item.id === id);
+
+    if (existing) {
+        existing.quantity++;
+    } else {
+        cart.push({...food, quantity: 1});
+    }
+
+    updateCart();
+}
+
+function changeQuantity(id, amount) {
+    const item = cart.find(food => food.id === id);
+
+    if (!item) return;
+
+    item.quantity += amount;
+
+    if (item.quantity <= 0) {
+        cart = cart.filter(food => food.id !== id);
+    }
+
+    updateCart();
+}
+
+function updateCart() {
+    const count = cart.reduce(
+        (sum, item) => sum + item.quantity, 0
+    );
+
+    const total = cart.reduce(
+        (sum, item) => sum + item.price * item.quantity, 0
+    );
+
+    document.getElementById("cart-count").textContent = count;
+    document.getElementById("cartTotal").textContent = "₹" + total;
+
+    const container = document.getElementById("cartItems");
+
+    if (cart.length === 0) {
+        container.innerHTML = '<p class="empty">Your cart is empty.</p>';
+        return;
+    }
+
+    container.innerHTML = cart.map(item => `
+        <div class="cart-item">
+            <div>
+                <strong>${item.name}</strong>
+                <p>₹${item.price} each</p>
+                <div class="quantity">
+                    <button onclick="changeQuantity(${item.id},-1)">-</button>
+                    <span>${item.quantity}</span>
+                    <button onclick="changeQuantity(${item.id},1)">+</button>
+                </div>
+            </div>
+            <strong>₹${item.price * item.quantity}</strong>
+        </div>
+    `).join("");
+}
+
+function toggleCart() {
+    document.getElementById("cartPanel")
+        .classList.toggle("open");
+}
+
+function checkout() {
+    if (cart.length === 0) {
+        alert("Please add food to your cart first!");
+        return;
+    }
+
+    alert("Your cart is ready! Payment and order placement will be connected in the next version.");
+}
+
+displayFoods(foods);
+updateCart();
+</script>
+
+</body>
+</html>
